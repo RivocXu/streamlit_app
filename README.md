@@ -1,97 +1,83 @@
 # Week 9 Mini Project
 > Puyang(Rivoc) Xu (px16)
 
-This project is a simple Rust Command-Line Tool with Testing. The main function is read the data of characters from a .csv file. Then we can use Rust Command-Line Tool to run this project. Unit tests are also included.
+This project is a Streamlit App with a Hugging Face Model. The main function of this app is using three different types of models: GPT-2, DistilBERT and BERT.
 
-Testing report: [Report →](https://gitlab.com/RivocX/mini-project-8/-/blob/master/test_report.md?ref_type=heads)
-
-
-
-
-
+URL: https://px16-ids721-llm-app.streamlit.app/
 
 ## Preparation
-
-pip3 install streamlit
-pip3 freeze > requirements.txt
+The installation of `Python`, `pip`, `streamlit` and following libraries is needed in this project.
+```
 pip3 install streamlit transformers
-
 pip3 install torch torchvision torchaudio
 pip3 install tensorflow
-
-
-
-
-
-The installation of `Cargo` is needed in this project.
-Create a new cargo project:
+pip3 install tf-keras
 ```
-cargo new cl_tool
-```
+You can test the installation by `test.py`.
 
-Modify dependencies in `Cargo.toml`:
+Create a `requirement.txt` with following content:
 ```
-[dependencies]
-csv = "1.1"
-serde = { version = "1.0", features = ["derive"] }
-clap = "2.33.3"
+streamlit 
+transformers
+tensorflow
+tf-keras
 ```
 
-Write a lotr_characters.csv file.
-![](./media/csv.png)
+## Functionalities
+Create a file called `app.py`. Write some functionalities. Detailed information as following.
 
-## Functions
+This project integrates multiple Hugging Face models into a single Streamlit web application, offering users the ability to interact with various natural language processing (NLP) capabilities. The app provides a user-friendly interface for experimenting with text-based AI models, including text generation, sentiment analysis, and named entity recognition.
 
 ### Features
-- **Command-Line Interface**: Leveraging `clap`, the tool provides a user-friendly command-line interface for specifying the CSV file path and applying filters based on character name and/or race.
-- **CSV Parsing**: Utilizes the `csv` crate to read and deserialize data from a specified CSV file into a vector of `Character` structs.
-- **Flexible Filtering**: Allows filtering the character data based on provided name and/or race parameters. If no filters are applied, the tool outputs all characters from the CSV file.
-- **Custom Data Structure**: Defines a `Character` struct to hold and represent character data, including fields for name, title, race, birthday, gender, weapon, and domain.
 
-### Main Components
-1. **Argument Parsing**: Parses command-line arguments for the CSV file path and optional filters for name and race.
-2. **CSV Processing**: Reads the CSV file and deserializes its content into a vector of `Character` structs.
-3. **Data Filtering**: Applies the optional name and race filters to the vector of characters, returning only those that match the criteria.
-4. **Output**: Prints detailed information about each character that matches the filtering criteria to the standard output.
+- **Model Selection**: Users can choose from three different types of NLP models:
+  - **Text Generation (GPT-2)**: Generates text based on a given prompt.
+  - **Sentiment Analysis (DistilBERT)**: Analyzes the sentiment of the input text as positive, negative, or neutral.
+  - **Named Entity Recognition (BERT)**: Identifies and labels entities within the text, such as person names, organizations, locations, and dates.
+
+- **User Interaction**: The app provides a simple and interactive way for users to input text and receive model outputs.
+  - A sidebar for selecting the model type.
+  - A text area for users to input their text.
+  - A button to process the input through the selected model.
+  - A display area for the model output, formatted according to the type of analysis performed.
 
 ### Usage
 
-The tool is invoked from the command line, with the CSV file path as a required argument and options for filtering by name (`-n` or `--name`) and race (`-r` or `--race`). The filtered character information is then printed to the standard output.
+1. **Select a Model**: Use the sidebar to choose between text generation, sentiment analysis, or named entity recognition.
+2. **Enter Text**: Input the text you want the model to process in the provided text area.
+3. **Generate/Analyze**: Click the "Run Model" button to see the model's output based on your input.
 
+## Test & Deploy
+Test locally:
+```
+streamlit run app.py
+```
+Then the website can be accessed by: http://localhost:8501/
 
-Build this project first:
-```
-cargo build --release
-```
-Then you can run with command line as following format:
-```
-./target/release/cl_tool <file> [OPTIONS]
-```
-For instance:
-```
-./target/release/cl_tool lotr_characters.csv --name "Frodo" --race "Hobbit"
-./target/release/cl_tool lotr_characters.csv --race "Elf"
-```
+To deploy the app, sign in https://streamlit.io/
 
-Run with cargo is also fine:
-```
-cargo build
-```
-```
-cargo run -- lotr_characters.csv --name "Frodo" --race "Hobbit"
-cargo run -- lotr_characters.csv --race "Hobbit"
-```
+Then create an app using existing repo.
 
-## Testing report
-The unit tests for this project ensure that the application's filtering logic accurately handles character data based on name and race criteria. By simulating a predefined set of "Lord of the Rings" characters, these tests verify the application's ability to apply filters individually or in combination, as well as its ability to return all characters when no filters are applied. Through these tests, we confirm the reliability and accuracy of the tool's core functionality, ensuring it operates as expected under a variety of conditions.
+Deploy the app.
+![](./media/deploy.png)
 
-Detailed testing report: [Report →](https://gitlab.com/RivocX/mini-project-8/-/blob/master/test_report.md?ref_type=heads)
+Then you can see it in your apps.
+![](./media/apps.png)
+
+And you can access the app using following url:
+https://px16-ids721-llm-app.streamlit.app/
 
 
 ## Results & Screenshots
 
-### Rust Command-Line Tools
-![](./media/cl.png)
+### Application root page
+![](./media/root.png)
 
-### Unit tests
-![](./media/test.png)
+### Text Generation (GPT-2)
+![](./media/1.png)
+
+### Sentiment Analysis (DistilBERT)
+![](./media/2.png)
+
+### Named Entity Recognition (BERT)
+![](./media/3.png)
